@@ -1,6 +1,6 @@
-import addTodoFactory from "../use-cases/add-todo";
+import addTodoFactory from "../use-cases/add-todo.js";
 
-export default function addTodo(httpRequest) {
+export default function addTodoController(httpRequest) {
   const data = httpRequest.body;
   const addTodoUseCase = addTodoFactory({
     database: {

@@ -1,4 +1,5 @@
 import mongodb from "mongodb";
+import makeTodoDatabase from "./db-todo.js";
 
 const MongoClient = mongodb.MongoClient;
 const url = "mongodb://localhost:27017";
@@ -15,17 +16,5 @@ async function makeDatabase() {
   return client.db(database);
 }
 
-export default function makeTodoDatabase() {
-  return Object.freeze({
-    insert,
-  });
-
-  async function insert() {
-    const database = await makeDatabase();
-    const result = await database
-      .collection("todo")
-      .insertOne({ author: "Armin Ganic" });
-    const { ...insertedInfo } = result.ops[0];
-    return { ...insertedInfo };
-  }
-}
+const todoDatabase = makeTodoDatabase({ makeDatabase });
+export default todoDatabase;

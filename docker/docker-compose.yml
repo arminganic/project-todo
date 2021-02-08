@@ -1,0 +1,11 @@
+version: "3"
+services:
+  database:
+    image: "mongo"
+    container_name: "mongodb"
+    environment:
+      - MONGO_INITDB_DATABASE=db-todo
+    volumes:
+      - $HOME/docker/volumes/mongo:/data/db
+    ports:
+      - "27017-27019:27017-27019"

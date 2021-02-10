@@ -1,9 +1,4 @@
 export default function buildTodoDatabase({ makeDatabase }) {
-  return Object.freeze({
-    findAll,
-    insert,
-  });
-
   async function findAll() {
     const database = await makeDatabase();
     const result = await database.collection("todo").find().toArray();
@@ -18,4 +13,9 @@ export default function buildTodoDatabase({ makeDatabase }) {
     const { ...insertedInfo } = result.ops[0];
     return { ...insertedInfo };
   }
+
+  return Object.freeze({
+    findAll,
+    insert,
+  });
 }

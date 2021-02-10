@@ -1,5 +1,5 @@
 import mongodb from "mongodb";
-import makeTodoDatabase from "./todo.database.js";
+import buildTodoDatabase from "./todo.database.js";
 
 const MongoClient = mongodb.MongoClient;
 const url = "mongodb://localhost:27017";
@@ -16,5 +16,5 @@ async function makeDatabase() {
   return client.db(database);
 }
 
-const todoDatabase = makeTodoDatabase({ makeDatabase });
+const todoDatabase = buildTodoDatabase({ makeDatabase });
 export default todoDatabase;

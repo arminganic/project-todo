@@ -1,7 +1,7 @@
 import database from "./database/index.js";
 import express from "express";
 import dotenv from "dotenv";
-import getTodosController from "./controllers/todos.controller.js";
+import buildTodoController from "./controllers/todo.controller.js";
 
 dotenv.config();
 
@@ -9,7 +9,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  const todoController = getTodosController({
+  const todoController = buildTodoController({
     database,
   });
   todoController

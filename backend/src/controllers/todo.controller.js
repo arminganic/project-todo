@@ -1,7 +1,7 @@
-import getTodosService from "../services/todo.service.js";
+import buildTodoService from "../services/todo.service.js";
 
-export default function getTodosController({ database }) {
-  const todosService = getTodosService({ database });
+export default function buildTodoController({ database }) {
+  const todosService = buildTodoService({ database });
 
   async function findAll(httpRequest) {
     const todos = await todosService.getTodos();

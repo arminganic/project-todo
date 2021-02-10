@@ -1,6 +1,6 @@
 import createTodo from "../entities/todo.entity.js";
 
-export default function getTodosService({ database }) {
+export default function buildTodoService({ database }) {
   async function getTodos() {
     return await database.findAll();
   }

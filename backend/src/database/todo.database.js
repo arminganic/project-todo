@@ -1,4 +1,4 @@
-export default function makeTodoDatabase({ makeDatabase }) {
+export default function buildTodoDatabase({ makeDatabase }) {
   return Object.freeze({
     findAll,
     insert,

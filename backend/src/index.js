@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 
 app.get(`${apiRoot}/todos`, makeCallback(todoController.getAll));
 app.post(`${apiRoot}/todo`, makeCallback(todoController.create));
+app.delete(`${apiRoot}/todo/:id`, makeCallback(todoController.remove));
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);

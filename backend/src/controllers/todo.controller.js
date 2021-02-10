@@ -28,8 +28,21 @@ export default function buildTodoController({ database }) {
     };
   }
 
+  async function remove(httpRequest) {
+    const id = httpRequest.params.id;
+    await todosService.remove({ id });
+
+    return {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      statusCode: 201,
+    };
+  }
+
   return Object.freeze({
     getAll,
     create,
+    remove,
   });
 }

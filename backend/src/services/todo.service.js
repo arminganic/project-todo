@@ -16,8 +16,18 @@ export default function buildTodoService({ database }) {
     });
   }
 
+  async function remove({ id }) {
+    const deletedCount = await database.remove({ id });
+
+    return {
+      deletedCount,
+      message: "Todo deleted.",
+    };
+  }
+
   return Object.freeze({
     getAll,
     create,
+    remove,
   });
 }

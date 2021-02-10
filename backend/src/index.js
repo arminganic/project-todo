@@ -1,7 +1,7 @@
+import buildTodoController from "./controllers/todo.controller.js";
 import database from "./database/index.js";
 import express from "express";
 import dotenv from "dotenv";
-import buildTodoController from "./controllers/todo.controller.js";
 
 dotenv.config();
 

@@ -1,11 +1,11 @@
 import createTodo from "../entities/todo.entity.js";
 
 export default function buildTodoService({ database }) {
-  async function getTodos() {
+  async function getAll() {
     return await database.findAll();
   }
 
-  function addTodo(data) {
+  function create(data) {
     const todo = createTodo(data);
 
     return database.insert({
@@ -17,7 +17,7 @@ export default function buildTodoService({ database }) {
   }
 
   return Object.freeze({
-    getTodos,
-    addTodo,
+    getAll,
+    create,
   });
 }

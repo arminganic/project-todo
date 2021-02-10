@@ -16,5 +16,4 @@ async function makeDatabase() {
   return client.db(database);
 }
 
-const todoDatabase = buildTodoDatabase({ makeDatabase });
-export default todoDatabase;
+export default buildTodoDatabase({ makeDatabase });

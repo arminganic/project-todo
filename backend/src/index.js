@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
     database,
   });
   todoController
-    .findAll(req)
+    .getAll(req)
     .then((httpResponse) => {
       if (httpResponse.headers) {
         res.set(httpResponse.headers);

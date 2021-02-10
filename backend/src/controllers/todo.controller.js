@@ -3,8 +3,8 @@ import buildTodoService from "../services/todo.service.js";
 export default function buildTodoController({ database }) {
   const todosService = buildTodoService({ database });
 
-  async function findAll(httpRequest) {
-    const todos = await todosService.getTodos();
+  async function getAll(httpRequest) {
+    const todos = await todosService.getAll();
 
     return {
       headers: {
@@ -15,9 +15,9 @@ export default function buildTodoController({ database }) {
     };
   }
 
-  async function addTodo(httpRequest) {
+  async function create(httpRequest) {
     const data = httpRequest.body;
-    const result = todosService.addTodo(data);
+    const result = todosService.create(data);
     console.log("Result after adding", result);
 
     return {
@@ -29,7 +29,7 @@ export default function buildTodoController({ database }) {
   }
 
   return Object.freeze({
-    findAll,
-    addTodo,
+    getAll,
+    create,
   });
 }

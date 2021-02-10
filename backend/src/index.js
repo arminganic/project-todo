@@ -10,48 +10,33 @@ const app = express();
 const port = process.env.PORT || 3000;
 const apiRoot = process.env.API_ROOT;
 
+const todoController = buildTodoController({
+  database,
+});
+
 app.use(bodyParser.json());
 
-app.get(`${apiRoot}/todos`, (req, res) => {
-  const todoController = buildTodoController({
-    database,
-  });
-  todoController
-    .getAll(req)
-    .then((httpResponse) => {
-      if (httpResponse.headers) {
-        res.set(httpResponse.headers);
-      }
-      res.type("json");
-      res.status(httpResponse.statusCode);
-      res.send(httpResponse.body);
-    })
-    .catch((e) => {
-      res.status(500);
-      res.send({ error: e.message });
-    });
-});
-
-app.post(`${apiRoot}/todo`, (req, res) => {
-  const todoController = buildTodoController({
-    database,
-  });
-  todoController
-    .create(req)
-    .then((httpResponse) => {
-      if (httpResponse.headers) {
-        res.set(httpResponse.headers);
-      }
-      res.type("json");
-      res.status(httpResponse.statusCode);
-      res.send(httpResponse.body);
-    })
-    .catch((e) => {
-      res.status(500);
-      res.send({ error: e.message });
-    });
-});
+app.get(`${apiRoot}/todos`, makeCallback(todoController.getAll));
+app.post(`${apiRoot}/todo`, makeCallback(todoController.create));
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
+
+function makeCallback(controllerFunction) {
+  return (req, res) => {
+    controllerFunction(req)
+      .then((httpResponse) => {
+        if (httpResponse.headers) {
+          res.set(httpResponse.headers);
+        }
+        res.type("json");
+        res.status(httpResponse.statusCode);
+        res.send(httpResponse.body);
+      })
+      .catch((e) => {
+        res.status(500);
+        res.send({ error: e.message });
+      });
+  };
+}

@@ -1,5 +1,5 @@
 import mongodb from "mongodb";
-import makeTodoDatabase from "./db-todo.js";
+import makeTodoDatabase from "./todo.database.js";
 
 const MongoClient = mongodb.MongoClient;
 const url = "mongodb://localhost:27017";

@@ -17,14 +17,14 @@ export default function buildTodoController({ database }) {
 
   async function create(httpRequest) {
     const data = httpRequest.body;
-    const result = todosService.create(data);
-    console.log("Result after adding", result);
+    const result = await todosService.create(data);
 
     return {
       headers: {
         "Content-Type": "application/json",
       },
       statusCode: 201,
+      body: { result },
     };
   }
 

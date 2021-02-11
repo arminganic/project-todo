@@ -3,6 +3,7 @@
 A simple backend application based on Node.js Express with the following features:
 
 - Create a single task
+- Update a single task
 - Delete a single task
 - Get all tasks
 

@@ -28,6 +28,23 @@ export default function buildTodoDatabase({ makeDatabase }) {
     return { ...insertedInfo };
   }
 
+  async function update({ id, data }) {
+    const database = await makeDatabase();
+    // updateOne(filter, updatedDocument, options)
+    await database.collection(collection).updateOne(
+      { _id: new ObjectID(id) },
+      {
+        $set: {
+          author: data.getAuthor(),
+          text: data.getText(),
+          createdOn: data.getCreatedOn(),
+          modifiedOn: data.getModifiedOn(),
+        },
+      },
+      { upsert: true }
+    );
+  }
+
   async function remove({ id: _id }) {
     const database = await makeDatabase();
     const result = await database
@@ -40,6 +57,7 @@ export default function buildTodoDatabase({ makeDatabase }) {
     findAll,
     findById,
     insert,
+    update,
     remove,
   });
 }

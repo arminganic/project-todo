@@ -17,6 +17,8 @@ const todoController = buildTodoController({
 app.use(bodyParser.json());
 
 app.get(`${apiRoot}/todos`, makeCallback(todoController.getAll));
+
+app.put(`${apiRoot}/todo/:id`, makeCallback(todoController.edit));
 app.post(`${apiRoot}/todo`, makeCallback(todoController.create));
 app.delete(`${apiRoot}/todo/:id`, makeCallback(todoController.remove));
 

@@ -28,6 +28,19 @@ export default function buildTodoController({ database }) {
     };
   }
 
+  async function edit(httpRequest) {
+    const id = httpRequest.params.id;
+    const data = httpRequest.body;
+    await todosService.edit({ id, data });
+
+    return {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      statusCode: 201,
+    };
+  }
+
   async function remove(httpRequest) {
     const id = httpRequest.params.id;
     await todosService.remove({ id });
@@ -43,6 +56,7 @@ export default function buildTodoController({ database }) {
   return Object.freeze({
     getAll,
     create,
+    edit,
     remove,
   });
 }

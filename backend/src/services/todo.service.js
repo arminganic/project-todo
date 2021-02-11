@@ -16,6 +16,19 @@ export default function buildTodoService({ database }) {
     });
   }
 
+  async function edit({ id, data }) {
+    const todo = await database.findById({ id });
+    const updatedTodo = createTodo({
+      ...data,
+      createdOn: todo.createdOn,
+    });
+
+    return database.update({
+      id,
+      data: updatedTodo,
+    });
+  }
+
   async function remove({ id }) {
     const deletedCount = await database.remove({ id });
 
@@ -28,6 +41,7 @@ export default function buildTodoService({ database }) {
   return Object.freeze({
     getAll,
     create,
+    edit,
     remove,
   });
 }

@@ -1,23 +1,20 @@
-export default function createTodo({
-  author,
-  text,
-  createdOn = Date.now(),
-  modifiedOn = Date.now(),
-}: any) {
-  if (!author) {
+import { Todo } from "../models/todo.model";
+
+export default function createTodo(entity: Todo): Readonly<Todo> {
+  entity.createdOn = Date.now();
+  entity.modifiedOn = Date.now();
+
+  if (!entity.author) {
     throw new Error("Todo must have an author.");
   }
-  if (author.length < 2) {
+
+  if (entity.author.length < 2) {
     throw new Error("Todo author's name must be longer than 2 characters.");
   }
-  if (!text || text.length < 1) {
+
+  if (!entity.text || entity.text.length < 1) {
     throw new Error("Todo must include at least one character of text.");
   }
 
-  return Object.freeze({
-    getAuthor: () => author,
-    getText: () => text,
-    getCreatedOn: () => createdOn,
-    getModifiedOn: () => modifiedOn,
-  });
+  return Object.freeze(entity);
 }

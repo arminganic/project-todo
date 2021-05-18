@@ -1,19 +1,22 @@
-import mongodb from "mongodb";
+import mongodb, { Db } from "mongodb";
+import { Todo } from "../models/todo.model";
+import { TodoDatabase } from "../models/todo-database.model";
 
-export default function buildTodoDatabase({ makeDatabase }: any) {
-  const ObjectID = mongodb.ObjectID;
-  const collection = "todo";
+export default function buildTodoDatabase(
+  makeDatabase: () => Promise<Db>
+): TodoDatabase {
+  const collection: string = "todo";
 
-  async function findAll() {
-    const database = await makeDatabase();
-    return await database.collection(collection).find().toArray();
+  async function findAll(): Promise<Todo[]> {
+    const database: Db = await makeDatabase();
+    return await database.collection<Todo>(collection).find().toArray();
   }
 
-  async function findById({ id: _id }: any) {
-    const database = await makeDatabase();
-    const results = await database
-      .collection(collection)
-      .find({ _id: new ObjectID(_id) })
+  async function findById({ id: _id }: any): Promise<Todo> {
+    const database: Db = await makeDatabase();
+    const results: Todo[] = await database
+      .collection<Todo>(collection)
+      .find({ _id: new mongodb.ObjectID(_id) })
       .toArray();
     if (results.length === 0) {
       return null;
@@ -21,18 +24,19 @@ export default function buildTodoDatabase({ makeDatabase }: any) {
     return results[0];
   }
 
-  async function insert(entity: any) {
-    const database = await makeDatabase();
-    const result = await database.collection(collection).insertOne(entity);
+  async function insert(entity: any): Promise<Todo> {
+    const database: Db = await makeDatabase();
+    const result: mongodb.InsertOneWriteOpResult<mongodb.WithId<Todo>> =
+      await database.collection<Todo>(collection).insertOne(entity);
     const { ...insertedInfo } = result.ops[0];
     return { ...insertedInfo };
   }
 
-  async function update({ id, data }: any) {
-    const database = await makeDatabase();
+  async function update({ id, data }: any): Promise<void> {
+    const database: Db = await makeDatabase();
     // updateOne(filter, updatedDocument, options)
-    await database.collection(collection).updateOne(
-      { _id: new ObjectID(id) },
+    await database.collection<Todo>(collection).updateOne(
+      { _id: new mongodb.ObjectID(id) },
       {
         $set: {
           author: data.getAuthor(),
@@ -45,11 +49,11 @@ export default function buildTodoDatabase({ makeDatabase }: any) {
     );
   }
 
-  async function remove({ id: _id }: any) {
-    const database = await makeDatabase();
-    const result = await database
-      .collection(collection)
-      .deleteOne({ _id: new ObjectID(_id) });
+  async function remove({ id: _id }: any): Promise<number> {
+    const database: Db = await makeDatabase();
+    const result: mongodb.DeleteWriteOpResultObject = await database
+      .collection<Todo>(collection)
+      .deleteOne({ _id: new mongodb.ObjectID(_id) });
     return result.deletedCount;
   }
 

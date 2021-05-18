@@ -2,16 +2,15 @@ import buildTodoController from "./controllers/todo.controller.js";
 import database from "./database/index.js";
 import express from "express";
 import dotenv from "dotenv";
+import { TodoController } from "./models/todo-controller.model.js";
 
 dotenv.config();
 
 const app = express();
-const port = +process.env.PORT || 3000;
-const apiRoot = process.env.API_ROOT;
+const port: number = +process.env.PORT || 3000;
+const apiRoot: string = process.env.API_ROOT;
 
-const todoController = buildTodoController({
-  database,
-});
+const todoController: TodoController = buildTodoController(database);
 
 app.use(express.json());
 
@@ -30,6 +29,7 @@ function makeCallback(controllerFunction: any) {
     controllerFunction(req)
       .then((httpResponse: any) => {
         if (httpResponse.headers) {
+          // todo: refactor this
           res.set(httpResponse.headers);
         }
         res.type("json");

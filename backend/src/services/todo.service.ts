@@ -1,22 +1,27 @@
 import createTodo from "../entities/todo.entity.js";
+import { Todo } from "../models/todo.model";
+import { TodoService } from "../models/todo-service.model";
+import { TodoDatabase } from "../models/todo-database.model";
 
-export default function buildTodoService({ database }: any) {
-  async function getAll() {
+export default function buildTodoService(
+  database: TodoDatabase
+): Readonly<TodoService> {
+  async function getAll(): Promise<Todo[]> {
     return await database.findAll();
   }
 
-  function create(data: any) {
-    const todo = createTodo(data);
+  function create(data: any): Promise<Todo> {
+    const todo: Todo = createTodo(data);
 
     return database.insert({
-      author: todo.getAuthor(),
-      text: todo.getText(),
-      createdOn: todo.getCreatedOn(),
-      modifiedOn: todo.getModifiedOn(),
+      author: todo.author,
+      text: todo.text,
+      createdOn: todo.createdOn,
+      modifiedOn: todo.modifiedOn,
     });
   }
 
-  async function edit({ id, data }: any) {
+  async function edit({ id, data }: any): Promise<void> {
     const todo = await database.findById({ id });
     const updatedTodo = createTodo({
       ...data,
@@ -29,13 +34,8 @@ export default function buildTodoService({ database }: any) {
     });
   }
 
-  async function remove({ id }: any) {
-    const deletedCount = await database.remove({ id });
-
-    return {
-      deletedCount,
-      message: "Todo deleted.",
-    };
+  async function remove({ id }: any): Promise<number> {
+    return await database.remove({ id });
   }
 
   return Object.freeze({

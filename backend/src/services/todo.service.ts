@@ -1,11 +1,11 @@
 import createTodo from "../entities/todo.entity.js";
 
-export default function buildTodoService({ database }) {
+export default function buildTodoService({ database }: any) {
   async function getAll() {
     return await database.findAll();
   }
 
-  function create(data) {
+  function create(data: any) {
     const todo = createTodo(data);
 
     return database.insert({
@@ -16,7 +16,7 @@ export default function buildTodoService({ database }) {
     });
   }
 
-  async function edit({ id, data }) {
+  async function edit({ id, data }: any) {
     const todo = await database.findById({ id });
     const updatedTodo = createTodo({
       ...data,
@@ -29,7 +29,7 @@ export default function buildTodoService({ database }) {
     });
   }
 
-  async function remove({ id }) {
+  async function remove({ id }: any) {
     const deletedCount = await database.remove({ id });
 
     return {

@@ -1,6 +1,6 @@
 import mongodb from "mongodb";
 
-export default function buildTodoDatabase({ makeDatabase }) {
+export default function buildTodoDatabase({ makeDatabase }: any) {
   const ObjectID = mongodb.ObjectID;
   const collection = "todo";
 
@@ -9,7 +9,7 @@ export default function buildTodoDatabase({ makeDatabase }) {
     return await database.collection(collection).find().toArray();
   }
 
-  async function findById({ id: _id }) {
+  async function findById({ id: _id }: any) {
     const database = await makeDatabase();
     const results = await database
       .collection(collection)
@@ -21,14 +21,14 @@ export default function buildTodoDatabase({ makeDatabase }) {
     return results[0];
   }
 
-  async function insert(entity) {
+  async function insert(entity: any) {
     const database = await makeDatabase();
     const result = await database.collection(collection).insertOne(entity);
     const { ...insertedInfo } = result.ops[0];
     return { ...insertedInfo };
   }
 
-  async function update({ id, data }) {
+  async function update({ id, data }: any) {
     const database = await makeDatabase();
     // updateOne(filter, updatedDocument, options)
     await database.collection(collection).updateOne(
@@ -45,7 +45,7 @@ export default function buildTodoDatabase({ makeDatabase }) {
     );
   }
 
-  async function remove({ id: _id }) {
+  async function remove({ id: _id }: any) {
     const database = await makeDatabase();
     const result = await database
       .collection(collection)

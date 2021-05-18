@@ -3,7 +3,7 @@ export default function createTodo({
   text,
   createdOn = Date.now(),
   modifiedOn = Date.now(),
-}) {
+}: any) {
   if (!author) {
     throw new Error("Todo must have an author.");
   }

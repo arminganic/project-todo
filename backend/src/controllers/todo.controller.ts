@@ -1,9 +1,9 @@
 import buildTodoService from "../services/todo.service.js";
 
-export default function buildTodoController({ database }) {
+export default function buildTodoController({ database }: any) {
   const todosService = buildTodoService({ database });
 
-  async function getAll(httpRequest) {
+  async function getAll(httpRequest: any) {
     const todos = await todosService.getAll();
 
     return {
@@ -15,7 +15,7 @@ export default function buildTodoController({ database }) {
     };
   }
 
-  async function create(httpRequest) {
+  async function create(httpRequest: any) {
     const data = httpRequest.body;
     const result = await todosService.create(data);
 
@@ -28,7 +28,7 @@ export default function buildTodoController({ database }) {
     };
   }
 
-  async function edit(httpRequest) {
+  async function edit(httpRequest: any) {
     const id = httpRequest.params.id;
     const data = httpRequest.body;
     await todosService.edit({ id, data });
@@ -41,7 +41,7 @@ export default function buildTodoController({ database }) {
     };
   }
 
-  async function remove(httpRequest) {
+  async function remove(httpRequest: any) {
     const id = httpRequest.params.id;
     await todosService.remove({ id });
 

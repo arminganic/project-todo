@@ -1,20 +1,19 @@
 import buildTodoController from "./controllers/todo.controller.js";
 import database from "./database/index.js";
-import bodyParser from "body-parser";
 import express from "express";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = +process.env.PORT || 3000;
 const apiRoot = process.env.API_ROOT;
 
 const todoController = buildTodoController({
   database,
 });
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.get(`${apiRoot}/todos`, makeCallback(todoController.getAll));
 
@@ -26,10 +25,10 @@ app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
 
-function makeCallback(controllerFunction) {
-  return (req, res) => {
+function makeCallback(controllerFunction: any) {
+  return (req: any, res: any) => {
     controllerFunction(req)
-      .then((httpResponse) => {
+      .then((httpResponse: any) => {
         if (httpResponse.headers) {
           res.set(httpResponse.headers);
         }
@@ -37,7 +36,7 @@ function makeCallback(controllerFunction) {
         res.status(httpResponse.statusCode);
         res.send(httpResponse.body);
       })
-      .catch((e) => {
+      .catch((e: any) => {
         res.status(500);
         res.send({ error: e.message });
       });

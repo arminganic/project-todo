@@ -2,12 +2,14 @@ import { TodoController } from "../models/todo-controller.model";
 import { Todo } from "../models/todo.model";
 import { TodoDatabase } from "../models/todo-database.model";
 import { Response } from "../models/response.model";
+import { TodoService } from "../models/todo-service.model";
+import { Request } from "express";
 import buildTodoService from "../services/todo.service.js";
 
 export default function buildTodoController(
   database: TodoDatabase
 ): Readonly<TodoController> {
-  const todosService = buildTodoService(database);
+  const todosService: Readonly<TodoService> = buildTodoService(database);
 
   async function getAll(): Promise<Response<Todo[]>> {
     const todos: Todo[] = await todosService.getAll();
@@ -21,8 +23,8 @@ export default function buildTodoController(
     };
   }
 
-  async function create(httpRequest: any): Promise<Response<any>> {
-    const data = httpRequest.body;
+  async function create(httpRequest: Request): Promise<Response<Todo>> {
+    const data: Todo = httpRequest.body;
     const result: Todo = await todosService.create(data);
 
     return {
@@ -30,14 +32,14 @@ export default function buildTodoController(
         contentType: "application/json",
       },
       statusCode: 201,
-      body: { result },
+      body: result,
     };
   }
 
-  async function edit(httpRequest: any): Promise<Response<any>> {
-    const id = httpRequest.params.id;
-    const data = httpRequest.body;
-    await todosService.edit({ id, data });
+  async function edit(httpRequest: Request): Promise<Response> {
+    const id: string = httpRequest.params.id;
+    const data: Todo = httpRequest.body;
+    await todosService.edit(id, data);
 
     return {
       headers: {
@@ -47,9 +49,9 @@ export default function buildTodoController(
     };
   }
 
-  async function remove(httpRequest: any): Promise<Response<any>> {
-    const id = httpRequest.params.id;
-    await todosService.remove({ id });
+  async function remove(httpRequest: Request): Promise<Response> {
+    const id: string = httpRequest.params.id;
+    await todosService.remove(id);
 
     return {
       headers: {

@@ -2,8 +2,8 @@ import { Todo } from "../models/todo.model";
 
 export interface TodoDatabase {
   findAll: () => Promise<Todo[]>;
-  findById: ({ id: _id }: any) => Promise<Todo>;
-  insert: (entity: any) => Promise<Todo>;
-  update: ({ id, data }: any) => Promise<void>;
-  remove: ({ id: _id }: any) => Promise<number>;
+  findById: (id: string) => Promise<Todo>;
+  insert: (entity: Todo) => Promise<Todo>;
+  update: (id: string, data: Todo) => Promise<void>;
+  remove: (id: string) => Promise<number>;
 }

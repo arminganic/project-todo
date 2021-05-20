@@ -10,8 +10,8 @@ export default function buildTodoService(
     return await database.findAll();
   }
 
-  function create(data: any): Promise<Todo> {
-    const todo: Todo = createTodo(data);
+  function create(data: Todo): Promise<Todo> {
+    const todo: Readonly<Todo> = createTodo(data);
 
     return database.insert({
       author: todo.author,
@@ -21,21 +21,18 @@ export default function buildTodoService(
     });
   }
 
-  async function edit({ id, data }: any): Promise<void> {
-    const todo = await database.findById({ id });
-    const updatedTodo = createTodo({
+  async function edit(id: string, data: Todo): Promise<void> {
+    const todo: Todo = await database.findById(id);
+    const updatedTodo: Todo = createTodo({
       ...data,
       createdOn: todo.createdOn,
     });
 
-    return database.update({
-      id,
-      data: updatedTodo,
-    });
+    return database.update(id, updatedTodo);
   }
 
-  async function remove({ id }: any): Promise<number> {
-    return await database.remove({ id });
+  async function remove(id: string): Promise<number> {
+    return await database.remove(id);
   }
 
   return Object.freeze({
